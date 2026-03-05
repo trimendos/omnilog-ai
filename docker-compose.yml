@@ -1,0 +1,10 @@
+services:
+  # Наш перший генератор
+  generator-barista:
+    build: ./micro-barista  # Вказуємо папку, де лежить Dockerfile
+    container_name: omnilog-barista
+    restart: unless-stopped # Якщо контейнер впаде, Docker сам його перезапустить!
+  generator-smart-home:
+    build: ./smart-home
+    container_name: omnilog-smart-home
+    restart: unless-stopped
