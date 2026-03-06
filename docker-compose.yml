@@ -8,3 +8,11 @@ services:
     build: ./smart-home
     container_name: omnilog-smart-home
     restart: unless-stopped
+  localstack:
+    image: localstack/localstack:latest
+    container_name: omnilog-aws-mock
+    ports:
+      - "4566:4566" # Це порт, на якому висить фейковий API AWS
+    environment:
+      - SERVICES=ec2,s3,iam # Кажемо йому імітувати тільки потрібні нам сервіси
+      - DOCKER_HOST=unix:///var/run/docker.sock
