@@ -1,0 +1,32 @@
+name: OmniLog CI Pipeline
+
+# 1. Коли запускати цього робота?
+on:
+  pull_request: # Запускати при кожному Pull Request
+    branches:
+      - main
+
+# 2. Що саме робити? (Роботи - jobs)
+jobs:
+  terraform-check:
+    name: Terraform Validate
+    runs-on: ubuntu-latest # GitHub сам виділить нам безкоштовний сервер на Ubuntu
+
+    steps:
+      # Крок 1: Завантажити наш код на сервер GitHub
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Крок 2: Встановити Terraform на цей сервер
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Крок 3: Ініціалізувати Terraform (без завантаження плагінів, щоб швидше)
+      - name: Terraform Init
+        run: terraform init -backend=false
+        working-directory: ./infrastructure
+
+      # Крок 4: Перевірити код на синтаксичні помилки!
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./infrastructure
