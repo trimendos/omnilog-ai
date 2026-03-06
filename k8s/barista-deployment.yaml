@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: barista-deployment
+  labels:
+    app: micro-barista
+spec:
+  replicas: 3 # Просимо K8s тримати 3 копії нашого сервісу одночасно
+  selector:
+    matchLabels:
+      app: micro-barista
+  template:
+    metadata:
+      labels:
+        app: micro-barista
+    spec:
+      containers:
+      - name: barista-container
+        image: omnilog-ai-generator-barista:latest
+        env:
+        - name: DB_PASSWORD
+          value: "super_secret_password_123"
+        ports:
+        - containerPort: 80
